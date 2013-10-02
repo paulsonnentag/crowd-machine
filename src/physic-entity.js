@@ -28,9 +28,9 @@
         this.physicDef = this.getPhysicDef(this.sprite);
       },
 
-      addTo: function (params) {
-        var stage = params.stage;
-        var world = params.world;
+      addTo: function (game) {
+        var stage = game.stage;
+        var world = game.world;
 
         stage.addChild(this.sprite);
         this.body = getPhysicBody(this.physicDef, world);
