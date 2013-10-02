@@ -2,49 +2,47 @@
   'use strict';
 
 
-  mmd.require(['Ball', 'Tube', 'Engine'],
-    function (Ball, Tube, Engine) {
-
-      var ball = new Ball({
-        x: 200,
-        y: 100,
-        texture: PIXI.Texture.fromImage('assets/img/minus-ball.png')
-      });
-
-      var ball2 = new Ball({
-        x: 100,
-        y: 200,
-        texture: PIXI.Texture.fromImage('assets/img/plus-ball.png')
-      });
-
-      var tube = new Tube({
-        x: 102,
-        y: 300,
-        rotation: 20
-      });
-
+  mmd.require(['Ball', 'Tube', 'Funnel', 'Engine'],
+    function (Ball, Tube, Funnel, Engine) {
 
 
       var engine = new Engine();
 
-      engine
-        .add(ball)
-        .add(ball2)
-        .add(tube);
+      var i, j, funnel, tube;
 
+      for (j = 0; j < 3; j++) {
+        for (i = 0; i < (7 + (j+1) % 2); i++) {
 
+          funnel = new Funnel({
+            x: 110 * i + 100 + (55 * (j % 2)),
+            y: 250 + 200 * j
+          });
 
-      var i = 20;
+          tube = new Tube({
+            x: 110 * i + 100 + (55 * (j % 2)),
+            y: 250 + 200 * j,
+            rotation: 20
+          });
+
+          engine.add(funnel);
+          engine.add(tube);
+
+        }
+
+      }
 
       setInterval(function () {
 
+        var ball  = new Ball({
+          x: 110 * Math.floor(Math.random() * 8) + 100,
+          y: -50,
+          texture: Math.random() < 0.5 ? PIXI.Texture.fromImage('assets/img/minus-ball.png') : PIXI.Texture.fromImage('assets/img/plus-ball.png')
+        });
 
-        i+= 0.1;
 
-        tube.setRotation(i);
+        engine.add(ball);
 
-
-      }, 10);
+      }, 300);
 
 
       engine.start();
