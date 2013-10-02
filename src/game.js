@@ -94,7 +94,7 @@
         // simulate physics
         world.Step(1 / 60, 10, 10);
         world.ClearForces();
-        //world.DrawDebugData();
+        world.DrawDebugData();
 
         ball.update();
         ball2.update();
