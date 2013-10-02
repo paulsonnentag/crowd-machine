@@ -11,7 +11,6 @@
   }());
 
   mmd.define('Engine', function () {
-
     var B2Vec2 = Box2D.Common.Math.b2Vec2;
     var B2World = Box2D.Dynamics.b2World;
     var B2DebugDraw = Box2D.Dynamics.b2DebugDraw;
@@ -34,8 +33,6 @@
         this.stage = new PIXI.Stage(0x000000);
         this.renderer = getRenderer();
         this.world = getWorld();
-
-        this.loop();
       },
 
       add: function (entity) {
@@ -43,6 +40,10 @@
         this.entities.push(entity);
 
         return this;
+      },
+
+      start: function () {
+        this.loop();
       },
 
       loop: function () {
@@ -54,7 +55,6 @@
         requestAnimFrame(this.loop.bind(this));
       }
     });
-
 
     function getRenderer() {
       var renderer = new PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);

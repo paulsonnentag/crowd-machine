@@ -2,9 +2,12 @@
   'use strict';
 
   mmd.define('PhysicEntity', function () {
-
+    var B2Vec2 = Box2D.Common.Math.b2Vec2;
+    var B2Mat22 = Box2D.Common.Math.b2Mat22;
+    var B2Transform = Box2D.Common.Math.b2Transform;
     var B2FixtureDef = Box2D.Dynamics.b2FixtureDef;
     var B2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+    var B2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
     var B2BodyDef = Box2D.Dynamics.b2BodyDef;
     var b2Body = Box2D.Dynamics.b2Body;
 
@@ -61,24 +64,37 @@
       }
     };
 
-    PhysicEntity.getCircleDef = function (sprite, material) {
-      var circleDef;
+    function getFixtureDef(material) {
+      var fixtureDef;
 
       if (material === undefined) {
         material = PhysicEntity.MATERIAL.SOLID;
       }
 
-      circleDef = new B2FixtureDef();
-      circleDef.density = material.density;
-      circleDef.friction = material.friction;
-      circleDef.restitution = material.restitution;
-      circleDef.shape = new B2CircleShape(12 / 30);
+      fixtureDef = new B2FixtureDef();
+      fixtureDef.density = material.density;
+      fixtureDef.friction = material.friction;
+      fixtureDef.restitution = material.restitution;
+
+      return fixtureDef;
+    }
+
+    PhysicEntity.getCircleDef = function (radius, material) {
+      var circleDef = getFixtureDef(material);
+      circleDef.shape = new B2CircleShape(radius / PhysicEntity.SCALE);
 
       return circleDef;
     };
 
-    PhysicEntity.getEdgeDef = function () {
+    PhysicEntity.getEdgeDef = function (point1, point2, material) {
+      var edgeDef = getFixtureDef(material);
+      edgeDef.shape = new B2PolygonShape();
+      edgeDef.shape.SetAsEdge(
+        new B2Vec2(point1.x / PhysicEntity.SCALE, point1.y / PhysicEntity.SCALE),
+        new B2Vec2(point2.x / PhysicEntity.SCALE, point2.y / PhysicEntity.SCALE)
+      );
 
+      return edgeDef;
     };
 
     PhysicEntity.getBodyDef = function (sprite, type) {
@@ -92,10 +108,23 @@
       bodyDef.type = type;
       bodyDef.position.x = sprite.position.x / PhysicEntity.SCALE;
       bodyDef.position.y = sprite.position.y / PhysicEntity.SCALE;
+      bodyDef.angle = sprite.rotation;
 
       return bodyDef;
     };
 
+    PhysicEntity.getTransform = function (position, rotation) {
+      var b2Matt22 = new B2Mat22();
+      b2Matt22.Set(rotation / 180 * Math.PI);
+
+      return new B2Transform(
+        new B2Vec2(
+          position.x / PhysicEntity.SCALE,
+          position.y / PhysicEntity.SCALE
+        ),
+        b2Matt22
+      );
+    };
 
     return PhysicEntity;
 

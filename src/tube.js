@@ -19,23 +19,30 @@
           y: params.y
         };
 
+        sprite.rotation = (params.rotation / 180) * Math.PI;
+
         return sprite;
       },
 
       getPhysicDef: function (sprite) {
         return {
-          body: PhysicEntity.getBodyDef(sprite),
+          body: PhysicEntity.getBodyDef(sprite, PhysicEntity.TYPE.KINEMATIC),
           fixtures: [
             PhysicEntity.getEdgeDef(
-              {x: 0, y: 0},
-              {x: 0, y: sprite.height}
+              {x: -13, y: 0},
+              {x: -13, y: 75}
             ),
             PhysicEntity.getEdgeDef(
-              {x: sprite.width, y: 0},
-              {x: sprite.width, y: sprite.height}
+              {x: 13, y: 0},
+              {x: 13, y: 75}
             )
           ]
         };
+      },
+
+      setRotation: function (rotation) {
+        var transform = PhysicEntity.getTransform(this.sprite.position, rotation)
+        this.body.SetTransform(transform);
       }
 
     });
