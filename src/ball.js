@@ -27,7 +27,7 @@
         return {
           body: PhysicEntity.getBodyDef(sprite),
           fixtures: [
-            PhysicEntity.getCircleDef(24 / 2)
+            PhysicEntity.getCircleDef(25 / 2)
           ]
         };
       }

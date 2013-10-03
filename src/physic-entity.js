@@ -35,7 +35,7 @@
         var stage = game.stage;
         var world = game.world;
 
-        stage.addChild(this.sprite);
+        stage.addChildAt(this.sprite, 0);
         this.body = getPhysicBody(this.physicDef, world);
       },
 
@@ -59,8 +59,8 @@
     PhysicEntity.MATERIAL = {
       SOLID: {
         density: 1.0,
-        friction: 0.5,
-        restitution: 0.2
+        friction: 0.1,
+        restitution: 0.01
       }
     };
 

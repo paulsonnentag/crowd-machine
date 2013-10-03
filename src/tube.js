@@ -8,6 +8,17 @@
 
     var Tube = PhysicEntity.extend({
 
+      addTo: function (world) {
+        this._super(world);
+
+
+        this.sprite.mouseenter = function () {
+          console.log('judge fudge!')
+
+        };
+
+      },
+
       getSprite: function (params) {
         var texture = new PIXI.Texture.fromImage('assets/img/pipe.png');
         var sprite = new PIXI.Sprite(texture);
@@ -19,6 +30,7 @@
           y: params.y
         };
 
+        sprite.interactive = true;
         sprite.rotation = (params.rotation / 180) * Math.PI;
 
         return sprite;
@@ -43,6 +55,11 @@
       setRotation: function (rotation) {
         var transform = PhysicEntity.getTransform(this.sprite.position, rotation)
         this.body.SetTransform(transform);
+      },
+
+      toggleRotation: function () {
+        console.log('click');
+        this.setRotation(-this.sprite.rotation);
       }
 
     });
