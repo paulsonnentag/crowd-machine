@@ -32,7 +32,6 @@
 
         if (this.physicDef.body.userData === null) {
 
-
           this.physicDef.body.userData = this;
         }
       },

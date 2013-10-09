@@ -11,7 +11,7 @@
       var i, j, funnel, tube, bucket;
 
       for (j = 0; j < 3; j++) {
-        for (i = 0; i < (7 + (j+1) % 2); i++) {
+        for (i = 0; i < (7 + (j + 1) % 2); i++) {
 
           funnel = new Funnel({
             x: 110 * i + 100 + (55 * (j % 2)),
@@ -43,7 +43,7 @@
         var ball  = new Ball({
           x: 110 * Math.floor(Math.random() * 8) + 100,
           y: -50,
-          texture: Math.random() < 0.5 ? PIXI.Texture.fromImage('assets/img/minus-ball.png') : PIXI.Texture.fromImage('assets/img/plus-ball.png')
+          type: Math.random() < 0.5 ? Ball.TYPE.MINUS : Ball.TYPE.PLUS
         });
 
 
