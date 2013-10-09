@@ -10,11 +10,6 @@
 
       init: function () {
         this._super.apply(this, arguments);
-
-        // TODO: setup sensor
-
-
-
       },
 
       getSprite: function (params) {
@@ -59,6 +54,10 @@
             bottomEdge
           ]
         };
+      },
+
+      onContact: function (entity) {
+        entity.deleted = true;
       }
     });
 

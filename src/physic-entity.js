@@ -29,6 +29,12 @@
       init: function (params) {
         this.sprite = this.getSprite(params);
         this.physicDef = this.getPhysicDef(this.sprite);
+
+        if (this.physicDef.body.userData === null) {
+
+
+          this.physicDef.body.userData = this;
+        }
       },
 
       addTo: function (game) {
@@ -44,7 +50,9 @@
         this.sprite.rotation = this.body.GetAngle();
         this.sprite.position.x = position.x * 30;
         this.sprite.position.y = position.y * 30;
-      }
+      },
+
+      onContact: function () {}
 
     });
 

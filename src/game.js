@@ -2,13 +2,13 @@
   'use strict';
 
 
-  mmd.require(['Ball', 'Tube', 'Funnel', 'Engine'],
-    function (Ball, Tube, Funnel, Engine) {
+  mmd.require(['Ball', 'Tube', 'Funnel', 'Bucket', 'Engine'],
+    function (Ball, Tube, Funnel, Bucket, Engine) {
 
 
       var engine = new Engine();
 
-      var i, j, funnel, tube;
+      var i, j, funnel, tube, bucket;
 
       for (j = 0; j < 3; j++) {
         for (i = 0; i < (7 + (j+1) % 2); i++) {
@@ -30,6 +30,13 @@
         }
 
       }
+
+      bucket = new Bucket({
+        x: 100,
+        y: 500
+      });
+
+      engine.add(bucket);
 
       setInterval(function () {
 
