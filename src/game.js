@@ -26,14 +26,13 @@
 
           engine.add(funnel);
           engine.add(tube);
-
         }
-
       }
 
       bucket = new Bucket({
-        x: 100,
-        y: 500
+        x: 65,
+        y: 750,
+        type: Bucket.TYPE.TEAM1
       });
 
       engine.add(bucket);

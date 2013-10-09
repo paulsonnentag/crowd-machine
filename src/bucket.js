@@ -6,6 +6,15 @@
   ], function (PhysicEntity) {
 
 
+    var TYPE = {
+      TEAM1: 0,
+      TEAM2: 1
+    };
+
+    var TEXTURE_URL = {};
+    TEXTURE_URL[TYPE.TEAM1] = 'assets/img/blue-bucket.png';
+    TEXTURE_URL[TYPE.TEAM2] = 'assets/img/red-bucket.png';
+
     var Bucket = PhysicEntity.extend({
 
       init: function () {
@@ -13,7 +22,7 @@
       },
 
       getSprite: function (params) {
-        var texture = new PIXI.Texture.fromImage('assets/img/funnel.png');
+        var texture = new PIXI.Texture.fromImage(TEXTURE_URL[params.type]);
         var sprite = new PIXI.Sprite(texture);
 
         sprite.anchor = {
@@ -60,6 +69,8 @@
         entity.deleted = true;
       }
     });
+
+    Bucket.TYPE = TYPE;
 
     return Bucket;
 

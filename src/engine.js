@@ -109,7 +109,7 @@
       function updateWorld(world) {
         world.Step(1 / 60, 10, 10);
         world.ClearForces();
-        world.DrawDebugData();
+        //world.DrawDebugData();
       }
 
       function updateEntities(entities, world, stage) {
