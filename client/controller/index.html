@@ -2,17 +2,26 @@
 <html>
   <head>
     <meta charset="UTF-8">
+
     <title>controller</title>
 
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="cleartype" content="on">
     <link rel="stylesheet" href="assets/css/controller.css">
   </head>
   <body>
 
+    <div class="spinner" id="spinner"></div>
 
-    <button id="toggleButton">toggle</button>
+    <div class="controller hidden" id="controller">
+      <button id="toggleButton">toggle</button>
+    </div>
 
     <!-- libs -->
     <script src="/socket.io/socket.io.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
 
     <!-- controller -->
     <script src="src/controller.js"></script>

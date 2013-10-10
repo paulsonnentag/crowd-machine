@@ -1,0 +1,18 @@
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 52px;
+    height: 52px;
+    margin-top: -27px;
+    margin-left: -27px;
+    background-image: url('../img/spinner.gif');
+}
+
+.controller {
+
+}
+
+.hidden {
+    display: none;
+}
