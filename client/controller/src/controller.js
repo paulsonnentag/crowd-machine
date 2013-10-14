@@ -2,6 +2,8 @@
   'use strict';
 
   var controllerElement = document.getElementById('controller');
+  var leftButtonElement = document.getElementById('rightButton');
+  var rightButtonElement = document.getElementById('leftButton');
   var spinnerElement = document.getElementById('spinner');
   var socket = io.connect();
 
@@ -23,8 +25,12 @@
     alert('Verbindung konnte nicht hergestellt werden !');
   });
 
-  controllerElement.addEventListener('click', function () {
-    socket.emit('toggle');
+  leftButtonElement.addEventListener('click', function () {
+    socket.emit('right');
+  });
+
+  rightButtonElement.addEventListener('click', function () {
+    socket.emit('left');
   });
 
   window.addEventListener('load', function () {

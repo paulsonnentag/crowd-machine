@@ -28,7 +28,10 @@
   }
 
   function addViewer(connection) {
-    if (!hasJoined(connection) && connection === undefined) {
+
+    if (!hasJoined(connection)) {
+
+      viewerConnection = connection;
 
       connection.emit('join', {role: 'viewer'});
 
@@ -43,14 +46,18 @@
 
   function addPlayer(connection, data) {
 
-    if (!hasJoined(connection) && reserveId(data.id)) {
+    if (!hasJoined(connection) && !_.isUndefined(viewerConnection) && reserveId(data.id)) {
 
       playerConnections.push(connection);
 
       connection.emit('join', {role: 'player'});
 
-      connection.on('toggle', function () {
-        viewerConnection.emit('toggle', {id: data.id});
+      connection.on('left', function () {
+        viewerConnection.emit('left', {id: data.id});
+      });
+
+      connection.on('right', function () {
+        viewerConnection.emit('right', {id: data.id});
       });
 
       connection.on('disconnect', function () {

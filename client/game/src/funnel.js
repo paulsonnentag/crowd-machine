@@ -42,7 +42,7 @@
       },
 
       setRotation: function (rotation) {
-        var transform = PhysicEntity.getTransform(this.sprite.position, rotation)
+        var transform = PhysicEntity.getTransform(this.sprite.position, rotation);
         this.body.SetTransform(transform);
       }
 

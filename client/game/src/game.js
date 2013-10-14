@@ -4,37 +4,47 @@
   mmd.require(['Ball', 'Tube', 'Funnel', 'Bucket', 'Engine'],
     function (Ball, Tube, Funnel, Bucket, Engine) {
 
-
+      var socket;
       var engine = new Engine();
+      var tubes = [];
 
-      var i, j, funnel, tube, bucket;
+      function init() {
+        var i, j, funnel, tube, bucket;
 
-      for (j = 0; j < 3; j++) {
-        for (i = 0; i < (7 + (j + 1) % 2); i++) {
+        for (j = 0; j < 3; j++) {
+          for (i = 0; i < (7 + (j + 1) % 2); i++) {
 
-          funnel = new Funnel({
-            x: 110 * i + 100 + (55 * (j % 2)),
-            y: 250 + 200 * j
-          });
+            funnel = new Funnel({
+              x: 110 * i + 100 + (55 * (j % 2)),
+              y: 250 + 200 * j
+            });
 
-          tube = new Tube({
-            x: 110 * i + 100 + (55 * (j % 2)),
-            y: 250 + 200 * j,
-            rotation: 20
-          });
+            tube = new Tube({
+              x: 110 * i + 100 + (55 * (j % 2)),
+              y: 250 + 200 * j,
+              rotation: 20
+            });
 
-          engine.add(funnel);
-          engine.add(tube);
+            tubes.push(tube);
+
+            engine.add(funnel);
+            engine.add(tube);
+          }
         }
+
+        bucket = new Bucket({
+          x: 65,
+          y: 750,
+          type: Bucket.TYPE.TEAM1
+        });
+
+        engine.add(bucket);
+
+        engine.start();
+
+        loop();
+
       }
-
-      bucket = new Bucket({
-        x: 65,
-        y: 750,
-        type: Bucket.TYPE.TEAM1
-      });
-
-      engine.add(bucket);
 
       function loop() {
 
@@ -51,10 +61,32 @@
         }, 100);
       }
 
-      loop();
+      socket = io.connect();
 
+      socket.on('connect', function () {
+        socket.emit('addViewer');
+      });
 
-      engine.start();
+      socket.on('join', function () {
+        console.log('joined');
+        init();
+      });
+
+      socket.on('reject', function () {
+        alert('Verbindung konnte nicht hergestellt werden !');
+      });
+
+      socket.on('left', function (data) {
+        var tube = tubes[data.id];
+
+        tube.setRotation(20);
+      });
+
+      socket.on('right', function (data) {
+        var tube = tubes[data.id];
+
+        tube.setRotation(-20);
+      });
 
     });
 
