@@ -11,6 +11,7 @@
     "micro-module-definition": "https://github.com/gmac/micro-module-definition.git",
     "box2dweb": "*",
     "Resig-Class": "https://github.com/dialog/Resig-Class.git",
-    "fastclick": "~0.6.10"
+    "fastclick": "~0.6.10",
+    "raf-shim": "https://github.com/inexorabletash/raf-shim.git"
   }
 }

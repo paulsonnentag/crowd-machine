@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-
   mmd.require(['Ball', 'Tube', 'Funnel', 'Bucket', 'Engine'],
     function (Ball, Tube, Funnel, Bucket, Engine) {
 
@@ -37,7 +36,7 @@
 
       engine.add(bucket);
 
-      setInterval(function () {
+      function loop() {
 
         var ball  = new Ball({
           x: 110 * Math.floor(Math.random() * 8) + 100,
@@ -45,10 +44,14 @@
           type: Math.random() < 0.5 ? Ball.TYPE.MINUS : Ball.TYPE.PLUS
         });
 
-
         engine.add(ball);
 
-      }, 300);
+        setTimeout(function () {
+          requestAnimationFrame(loop);
+        }, 100);
+      }
+
+      loop();
 
 
       engine.start();
