@@ -10,8 +10,7 @@
 
   app = express();
   app.use(express.logger('dev'));
-  app.use('/game', express['static']('../client/game'));
-  app.use('/controller', express['static']('../client/controller'));
+  app.use('/', express['static']('../client'));
 
   server = http.createServer(app);
   server.listen(8080);
