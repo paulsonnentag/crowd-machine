@@ -1,16 +1,21 @@
 {
   "name": "crowd-machine",
   "version": "0.0.0",
-  "description": "",
+  "description": "a collaborative multiplayer game",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "Paul Sonnentag",
+  "author": "Paul Sonnentag <Paul.Sonnentag@googlemail.com>",
   "license": "WTFPL",
   "dependencies": {
     "express": "~3.4.0",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "underscore": "~1.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BrackCurly/crowd-machine.git"
   }
 }
