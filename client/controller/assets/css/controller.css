@@ -1,18 +1,136 @@
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+/* spinner */
 .spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 52px;
-    height: 52px;
-    margin-top: -27px;
-    margin-left: -27px;
+    margin: -24px 0 0 -24px;
     background-image: url('../img/spinner.gif');
+    width: 48px;
+    height: 48px;
 }
 
+html, body {
+    height: 100%;
+    background-color: #fff;
+}
+
+/* controller */
 .controller {
-
+    margin: auto;
+    position: relative;
+    height: 100%;
+    background-color: #dedbcc;
+    padding: 20px;
+    max-width: 600px;
+    max-height: 400px;
+    box-shadow: 0 1px 2px rgba(221,218,203,0.6), inset 0 2px 1px rgba(255,255,255,0.5), inset 0 -1px 1px rgba(0,0,0,0.5);
 }
 
+.inner-controller {
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    border: 1px solid #a0a0a0;
+    height: 100%;
+}
+
+/* button */
+.button-socket {
+    border-radius: 5px;
+    background-color: #dad7c9;
+    width: 85px;
+    height: 85px;
+    margin: -45px 0 0 -35px;
+    padding: 7px;
+    box-shadow: 0 1px 2px rgba(221,218,203,0.6), inset 0 2px 1px rgba(255,255,255,0.5), inset 0 -1px 1px rgba(0,0,0,0.5);
+}
+
+.button-socket.right {
+    margin-right: 75px;
+}
+
+.button-socket.left {
+    margin-left: 75px;
+}
+
+.button {
+    background-color: #f22f25;
+    background: -webkit-gradient(linear,left top,left bottom, color-stop(0, #da2117), color-stop(1, #fe4b39));
+    width: 70px;
+    height: 70px;
+    padding: 22px 0;
+    border-radius: 50%;
+    box-shadow: 0 3px 1px #341f1b, 0px 2px 4px #341f1b, inset 0 2px 2px 2px #ee5558, inset 0 -1px 2px rgba(0,0,0,0.7)
+}
+
+.button-label {
+    color: #f22f25;
+    text-align: center;
+}
+
+
+/* helpers */
 .hidden {
     display: none;
+}
+
+.right,
+.left,
+.center,
+.top,
+.bottom {
+    position: absolute;
+}
+
+.center {
+    top: 50%;
+    left: 50%;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    left: auto;
+    right: 0;
+}
+
+.top {
+    top: 0;
+}
+
+.bottom {
+    top: auto;
+    bottom: 0;
+}
+
+.landscape {
+    display: none;
+}
+
+@media screen and (orientation:portrait) {
+    .portrait {
+        display: block;
+    }
+    .landscape {
+        display: none;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .portrait {
+        display: none;
+    }
+    .landscape {
+        display: block;
+    }
 }

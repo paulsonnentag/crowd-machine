@@ -2,10 +2,16 @@
   'use strict';
 
   var controllerElement = document.getElementById('controller');
-  var leftButtonElement = document.getElementById('rightButton');
-  var rightButtonElement = document.getElementById('leftButton');
+  var rightButtonElement = document.getElementById('rightButton');
+  var leftButtonElement = document.getElementById('leftButton');
   var spinnerElement = document.getElementById('spinner');
   var socket = io.connect();
+
+  function vibrate(time) {
+    if (navigator.vibrate) {
+      navigator.vibrate(time);
+    }
+  }
 
   function getId() {
     return window.location.hash.slice(1);
@@ -26,11 +32,13 @@
   });
 
   leftButtonElement.addEventListener('click', function () {
-    socket.emit('right');
+    socket.emit('left');
+    vibrate(50);
   });
 
   rightButtonElement.addEventListener('click', function () {
-    socket.emit('left');
+    socket.emit('right');
+    vibrate(50);
   });
 
   window.addEventListener('load', function () {

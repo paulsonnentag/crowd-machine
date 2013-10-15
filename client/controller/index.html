@@ -13,11 +13,27 @@
   </head>
   <body>
 
-    <div class="spinner" id="spinner"></div>
 
-    <div class="controller hidden" id="controller">
-      <button id="leftButton"><--</button>
-      <button id="rightButton">--></button>
+    <div class="spinner center" id="spinner"></div>
+
+    <div class="warning portrait">
+      <h2>Bitte drehen, um in den Landscapemodus zu wechseln !</h2>
+    </div>
+
+    <div class="controller landscape hidden" id="controller">
+      <div class="inner-controller">
+
+        <div class="button-socket right center">
+          <div class="button button-up" id="rightButton"></div>
+          <h4 class="button-label">Rechts</h4>
+        </div>
+
+        <div class="button-socket left center">
+          <div class="button button-down" id="leftButton"></div>
+          <h4 class="button-label">Links</h4>
+        </div>
+
+      </div>
     </div>
 
     <!-- libs -->
