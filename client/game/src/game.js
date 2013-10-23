@@ -4,7 +4,7 @@
   var HEIGHT = 600;
   var WIDTH = 800;
   var PADDLE_WIDTH = 25;
-  var PADDLE_HEIGHT = 150;
+  var PADDLE_HEIGHT = 100;
   var PADDLE_SPEED = 10;
   var LEFT_BORDER = 20;
   var RIGHT_BORDER = WIDTH - 20;
@@ -137,7 +137,7 @@
   }
 
   function drawScore(score, xPos) {
-    context.fillStyle = '#fff';
+    context.fillStyle = 'red';
     context.font = 'bold 30px sans-serif';
     context.fillText(score, xPos, 30);
   }
@@ -146,9 +146,6 @@
 
     context.fillStyle = '#000';
     context.fillRect(0, 0, WIDTH, HEIGHT);
-
-    drawScore(score[0], LEFT_BORDER);
-    drawScore(score[1], RIGHT_BORDER - 20);
 
     updateBall();
 
@@ -159,6 +156,9 @@
 
     drawPaddles(paddles[0]);
     drawPaddles(paddles[1]);
+
+    drawScore(score[0], LEFT_BORDER);
+    drawScore(score[1], RIGHT_BORDER - 20);
 
     requestAnimationFrame(loop);
   }
@@ -199,13 +199,13 @@
     return _.find(paddles[paddleData.team], _(idEquals).partial(paddleData.id));
   }
 
-  function movePaddle(direction, paddleData) {
+  function movePaddle(paddleData) {
+
     var paddle = getPaddle(paddleData, players);
-    paddle.posY += direction * PADDLE_SPEED;
+    paddle.posY =  HEIGHT * paddleData.pos;
   }
 
-  socket.on('left', _(movePaddle).partial(-1));
+  socket.on('move', movePaddle);
 
-  socket.on('right', _(movePaddle).partial(1));
 
 }());

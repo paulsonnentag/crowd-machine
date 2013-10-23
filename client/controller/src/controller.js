@@ -1,12 +1,10 @@
 (function () {
   'use strict';
 
-  var controllerElement = document.getElementById('controller');
+  var sliderElement = document.getElementById('slider');
   var teamSelectionElement = document.getElementById('teamSelection');
   var team1ButtonElement = document.getElementById('team1Button');
   var team2ButtonElement = document.getElementById('team2Button');
-  var rightButtonElement = document.getElementById('rightButton');
-  var leftButtonElement = document.getElementById('leftButton');
   var spinnerElement = document.getElementById('spinner');
   var socket = io.connect();
 
@@ -24,7 +22,7 @@
 
   socket.on('join', function () {
     console.log('join');
-    controllerElement.classList.remove('hidden');
+    sliderElement.classList.remove('hidden');
   });
 
   socket.on('reject', function () {
@@ -32,31 +30,37 @@
     alert('Verbindung konnte nicht hergestellt werden !');
   });
 
-  leftButtonElement.addEventListener('click', function () {
-    socket.emit('left');
-    vibrate(50);
-  });
-
-  rightButtonElement.addEventListener('click', function () {
-    socket.emit('right');
-    vibrate(50);
-  });
-
   team1ButtonElement.addEventListener('click', function () {
     socket.emit('addPlayer', {team: 0});
-    controllerElement.classList.remove('hidden');
+    sliderElement.classList.remove('hidden');
     teamSelectionElement.classList.add('hidden');
   });
 
   team2ButtonElement.addEventListener('click', function () {
     socket.emit('addPlayer', {team: 1});
-    controllerElement.classList.remove('hidden');
+    sliderElement.classList.remove('hidden');
     teamSelectionElement.classList.add('hidden');
   });
 
 
-  window.addEventListener('load', function () {
-    FastClick.attach(document.body);
-  }, false);
+  $(function () {
+
+    // enable fast click
+    window.addEventListener('load', function () {
+      FastClick.attach(document.body);
+    }, false);
+
+    var $slider = $('#slider').noUiSlider({
+      range: [0, 1],
+      start: 0.5,
+      handles: 1,
+      slide: function () {
+        socket.emit('move', {pos: $slider.val()});
+      }
+    });
+
+  });
+
+
 
 }());

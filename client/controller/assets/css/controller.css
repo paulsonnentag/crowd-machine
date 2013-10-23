@@ -6,8 +6,12 @@
 }
 
 body, html {
-    margin: 0;
     font-family: sans-serif;
+    margin: 0;
+}
+
+body {
+    padding: 20px;
 }
 
 /* spinner */
@@ -22,60 +26,6 @@ html, body {
     height: 100%;
     background-color: #fff;
 }
-
-/* controller */
-.controller {
-    margin: auto;
-    position: relative;
-    height: 100%;
-    background-color: #dedbcc;
-    padding: 20px;
-    max-width: 600px;
-    max-height: 400px;
-    box-shadow: 0 1px 2px rgba(221,218,203,0.6), inset 0 2px 1px rgba(255,255,255,0.5), inset 0 -1px 1px rgba(0,0,0,0.5);
-}
-
-.inner-controller {
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    border: 1px solid #a0a0a0;
-    height: 100%;
-}
-
-/* button */
-.button-socket {
-    border-radius: 5px;
-    background-color: #dad7c9;
-    width: 85px;
-    height: 85px;
-    margin: -45px 0 0 -35px;
-    padding: 7px;
-    box-shadow: 0 1px 2px rgba(221,218,203,0.6), inset 0 2px 1px rgba(255,255,255,0.5), inset 0 -1px 1px rgba(0,0,0,0.5);
-}
-
-.button-socket.right {
-    margin-right: 75px;
-}
-
-.button-socket.left {
-    margin-left: 75px;
-}
-
-.button {
-    background-color: #f22f25;
-    background: -webkit-gradient(linear,left top,left bottom, color-stop(0, #da2117), color-stop(1, #fe4b39));
-    width: 70px;
-    height: 70px;
-    padding: 22px 0;
-    border-radius: 50%;
-    box-shadow: 0 3px 1px #341f1b, 0px 2px 4px #341f1b, inset 0 2px 2px 2px #ee5558, inset 0 -1px 2px rgba(0,0,0,0.7)
-}
-
-.button-label {
-    color: #f22f25;
-    text-align: center;
-}
-
 
 /* helpers */
 .hidden {

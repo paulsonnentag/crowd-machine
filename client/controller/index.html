@@ -9,6 +9,7 @@
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="bower_components/nouislider/jquery.nouislider.css">
     <link rel="stylesheet" href="assets/css/controller.css">
   </head>
   <body>
@@ -24,25 +25,16 @@
       <h2>Bitte drehen, um in den Landscapemodus zu wechseln !</h2>
     </div>
 
-    <div class="controller landscape hidden" id="controller">
-      <div class="inner-controller">
-
-        <div class="button-socket right center">
-          <div class="button button-up" id="rightButton"></div>
-          <h4 class="button-label">Rechts</h4>
-        </div>
-
-        <div class="button-socket left center">
-          <div class="button button-down" id="leftButton"></div>
-          <h4 class="button-label">Links</h4>
-        </div>
-
-      </div>
-    </div>
+    <br>
+    <br>
+    <br>
+    <div class="noUiSlider hidden landscape" id="slider"></div>
 
     <!-- libs -->
     <script src="/socket.io/socket.io.js"></script>
+    <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="bower_components/nouislider/jquery.nouislider.js"></script>
 
     <!-- controller -->
     <script src="src/controller.js"></script>

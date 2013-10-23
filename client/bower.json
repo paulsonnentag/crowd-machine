@@ -9,6 +9,8 @@
   "dependencies": {
     "fastclick": "~0.6.10",
     "raf-shim": "https://github.com/inexorabletash/raf-shim.git",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "zeptojs": "~0.1.1",
+    "nouislider": "https://github.com/leongersen/noUiSlider.git#~4.2.2"
   }
 }

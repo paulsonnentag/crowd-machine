@@ -41,12 +41,8 @@
       connection.emit('join', player);
       viewerConnection.emit('addPlayer', player);
 
-      connection.on('left', function () {
-        viewerConnection.emit('left', player);
-      });
-
-      connection.on('right', function () {
-        viewerConnection.emit('right', player);
+      connection.on('move', function (data) {
+        viewerConnection.emit('move', _.extend({pos: data.pos},  player));
       });
 
       connection.on('disconnect', function () {
