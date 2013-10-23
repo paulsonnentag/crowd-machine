@@ -1,93 +1,211 @@
 (function () {
   'use strict';
 
-  mmd.require(['Ball', 'Tube', 'Funnel', 'Bucket', 'Engine'],
-    function (Ball, Tube, Funnel, Bucket, Engine) {
+  var HEIGHT = 600;
+  var WIDTH = 800;
+  var PADDLE_WIDTH = 25;
+  var PADDLE_HEIGHT = 150;
+  var PADDLE_SPEED = 10;
+  var LEFT_BORDER = 20;
+  var RIGHT_BORDER = WIDTH - 20;
 
-      var socket;
-      var engine = new Engine();
-      var tubes = [];
+  var socket;
+  var players = [
+    [],
+    []
+  ];
 
-      function init() {
-        var i, j, funnel, tube, bucket;
+  var score = [0, 0];
 
-        for (j = 0; j < 3; j++) {
-          for (i = 0; i < (7 + (j + 1) % 2); i++) {
+  var paddles = [];
 
-            funnel = new Funnel({
-              x: 110 * i + 100 + (55 * (j % 2)),
-              y: 250 + 200 * j
-            });
+  var ball = {
+    pos: {
+      x: WIDTH / 2,
+      y: HEIGHT / 2
+    },
+    speed: {
+      x: 5,
+      y: 5
+    },
+    width: 20,
+    height: 20
+  };
 
-            tube = new Tube({
-              x: 110 * i + 100 + (55 * (j % 2)),
-              y: 250 + 200 * j,
-              rotation: 20
-            });
+  var canvas = document.getElementById('game');
+  var context = canvas.getContext('2d');
 
-            tubes.push(tube);
+  function init() {
+    loop();
+  }
 
-            engine.add(funnel);
-            engine.add(tube);
-          }
+  function drawRect(rect) {
+    context.fillStyle = '#fff';
+    context.fillRect(rect.pos.x - rect.width / 2, rect.pos.y - rect.height / 2, rect.width, rect.height);
+  }
+
+  function getPaddles(players, posX) {
+
+    return _.map(players, function (player) {
+      return {
+        pos: {
+          x: posX,
+          y: player.posY
+        },
+        height: PADDLE_HEIGHT / players.length,
+        width: PADDLE_WIDTH
+      };
+    });
+  }
+
+  function resetBall(team) {
+    score[team] += 1;
+
+    setTimeout(function () {
+      ball.pos = {
+        x: WIDTH / 2,
+        y: HEIGHT / 2
+      };
+
+      ball.speed = {
+        x: team ?  5 : -5,
+        y: 0
+      };
+
+      ball.outOfField = false;
+
+    }, 500);
+  }
+
+  function updateBall() {
+
+    if (players[0].length > 0 && players[1].length > 0) {
+      ball.pos.x += ball.speed.x;
+      ball.pos.y += ball.speed.y;
+    } else {
+      ball.pos = {
+        x: WIDTH / 2,
+        y: HEIGHT / 2
+      };
+    }
+
+    if (!ball.outOfField) {
+
+      if (ball.pos.x - ball.width / 2 < LEFT_BORDER + PADDLE_WIDTH / 2) {
+
+        if (hitTestBall(getPaddles(players[0]))) {
+          ball.speed.x *= -1;
+          ball.pos.x = LEFT_BORDER + PADDLE_WIDTH / 2 + ball.width / 2;
+        } else {
+          resetBall(1);
+          ball.outOfField = true;
         }
 
-        bucket = new Bucket({
-          x: 65,
-          y: 750,
-          type: Bucket.TYPE.TEAM1
-        });
+      } else if (ball.pos.x + ball.width / 2 > RIGHT_BORDER - PADDLE_WIDTH / 2) {
 
-        engine.add(bucket);
-
-        engine.start();
-
-        loop();
-
+        if (hitTestBall(getPaddles(players[1]))) {
+          ball.speed.x *= -1;
+          ball.pos.x = RIGHT_BORDER - PADDLE_WIDTH / 2 - ball.width / 2;
+        } else {
+          resetBall(0);
+          ball.outOfField = true;
+        }
       }
 
-      function loop() {
-
-        var ball  = new Ball({
-          x: 110 * Math.floor(Math.random() * 8) + 100,
-          y: -50,
-          type: Math.random() < 0.5 ? Ball.TYPE.MINUS : Ball.TYPE.PLUS
-        });
-
-        engine.add(ball);
-
-        setTimeout(function () {
-          requestAnimationFrame(loop);
-        }, 100);
+      if (ball.pos.y < ball.height / 2) {
+        ball.speed.y *= -1;
+        ball.pos.y = ball.height / 2;
+      } else if (ball.pos.y + ball.height / 2 > HEIGHT) {
+        ball.speed.y *= -1;
+        ball.pos.y = HEIGHT - ball.height / 2;
       }
 
-      socket = io.connect();
+    }
 
-      socket.on('connect', function () {
-        socket.emit('addViewer');
-      });
+  }
 
-      socket.on('join', function () {
-        console.log('joined');
-        init();
-      });
+  function hitTestBall(paddles) {
+    return _(paddles).any(testCollisionWithBall);
+  }
 
-      socket.on('reject', function () {
-        alert('Verbindung konnte nicht hergestellt werden !');
-      });
+  function testCollisionWithBall(paddle) {
+    return (ball.pos.y + ball.height / 2 > paddle.pos.y - paddle.height / 2) && (ball.pos.y - ball.height / 2 < paddle.pos.y + paddle.height / 2);
+  }
 
-      socket.on('left', function (data) {
-        var tube = tubes[data.id];
+  function drawPaddles(paddles) {
+    _(paddles).each(drawRect);
+  }
 
-        tube.setRotation(20);
-      });
+  function drawScore(score, xPos) {
+    context.fillStyle = '#fff';
+    context.font = 'bold 30px sans-serif';
+    context.fillText(score, xPos, 30);
+  }
 
-      socket.on('right', function (data) {
-        var tube = tubes[data.id];
+  function loop() {
 
-        tube.setRotation(-20);
-      });
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, WIDTH, HEIGHT);
 
+    drawScore(score[0], LEFT_BORDER);
+    drawScore(score[1], RIGHT_BORDER - 20);
+
+    updateBall();
+
+    drawRect(ball);
+
+    paddles[0] = getPaddles(players[0], LEFT_BORDER);
+    paddles[1] = getPaddles(players[1], RIGHT_BORDER);
+
+    drawPaddles(paddles[0]);
+    drawPaddles(paddles[1]);
+
+    requestAnimationFrame(loop);
+  }
+
+  socket = io.connect();
+
+  socket.on('connect', function () {
+    socket.emit('addViewer');
+  });
+
+  socket.on('join', function () {
+    console.log('join');
+    init();
+  });
+
+  socket.on('reject', function () {
+    alert('Verbindung konnte nicht hergestellt werden !');
+  });
+
+  socket.on('addPlayer', function (data) {
+    players[data.team].push({
+      id: data.id,
+      posY: Math.random() * HEIGHT
     });
+
+    console.log(players);
+  });
+
+  function idEquals(id, object) {
+    return object.id === id;
+  }
+
+  socket.on('removePlayer', function (data) {
+    players[data.team] = _.reject(players[data.team], _(idEquals).partial(data.id));
+  });
+
+  function getPaddle(paddleData, paddles) {
+    return _.find(paddles[paddleData.team], _(idEquals).partial(paddleData.id));
+  }
+
+  function movePaddle(direction, paddleData) {
+    var paddle = getPaddle(paddleData, players);
+    paddle.posY += direction * PADDLE_SPEED;
+  }
+
+  socket.on('left', _(movePaddle).partial(-1));
+
+  socket.on('right', _(movePaddle).partial(1));
 
 }());

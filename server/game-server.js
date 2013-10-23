@@ -4,65 +4,53 @@
   var _ = require('underscore');
 
   var viewerConnection;
-  var playerConnections = [];
-  var ids = {};
 
-  function reserveId(id) {
-    var isValid;
+  var getId = (function () {
 
-    id = Math.floor(id);
-    isValid = id >= 0 && id <= 100 && ids[id] === undefined;
+    var id = 0;
 
-    if (isValid) {
-      ids[id] = true;
-    }
-    return isValid;
-  }
-
-  function emitEvent(name, event, connection) {
-    connection.emit(name, event);
-  }
-
-  function hasJoined(connection) {
-    return connection === viewerConnection || _(playerConnections).contains(connection);
-  }
+    return function () {
+      return id++;
+    };
+  }());
 
   function addViewer(connection) {
 
-    if (!hasJoined(connection)) {
+    viewerConnection = connection;
 
-      viewerConnection = connection;
+    connection.emit('join', {role: 'viewer'});
 
-      connection.emit('join', {role: 'viewer'});
+    connection.on('disconnect', function () {
+      connection = undefined;
+    });
 
-      connection.on('disconnect', function () {
-        connection = undefined;
-      });
-
-    } else {
-      connection.emit('reject');
-    }
   }
 
   function addPlayer(connection, data) {
+    var player;
 
-    if (!hasJoined(connection) && !_.isUndefined(viewerConnection) && reserveId(data.id)) {
+    if (viewerConnection !== undefined && (data.team === 0 || data.team === 1)) {
 
-      playerConnections.push(connection);
+      player = {
+        id: getId(),
+        team: data.team
+      };
 
-      connection.emit('join', {role: 'player'});
+      console.log(player);
+
+      connection.emit('join', player);
+      viewerConnection.emit('addPlayer', player);
 
       connection.on('left', function () {
-        viewerConnection.emit('left', {id: data.id});
+        viewerConnection.emit('left', player);
       });
 
       connection.on('right', function () {
-        viewerConnection.emit('right', {id: data.id});
+        viewerConnection.emit('right', player);
       });
 
       connection.on('disconnect', function () {
-        delete ids[data.id];
-        playerConnections = _(playerConnections).without(connection);
+        viewerConnection.emit('removePlayer', player);
       });
 
     } else {

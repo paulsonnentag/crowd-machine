@@ -7,11 +7,8 @@
   "license": "WTFPL",
   "private": true,
   "dependencies": {
-    "pixi": "~1.3.0",
-    "micro-module-definition": "https://github.com/gmac/micro-module-definition.git",
-    "box2dweb": "*",
-    "Resig-Class": "https://github.com/dialog/Resig-Class.git",
     "fastclick": "~0.6.10",
-    "raf-shim": "https://github.com/inexorabletash/raf-shim.git"
+    "raf-shim": "https://github.com/inexorabletash/raf-shim.git",
+    "underscore": "~1.5.2"
   }
 }

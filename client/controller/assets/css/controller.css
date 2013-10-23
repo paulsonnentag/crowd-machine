@@ -79,7 +79,7 @@ html, body {
 
 /* helpers */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .right,
@@ -115,6 +115,16 @@ html, body {
 
 .landscape {
     display: none;
+}
+
+.btn {
+    width: 100%;
+    display: block;
+    font-size: 30px;
+}
+
+.well {
+    padding: 20px;
 }
 
 @media screen and (orientation:portrait) {

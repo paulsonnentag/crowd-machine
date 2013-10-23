@@ -2,6 +2,9 @@
   'use strict';
 
   var controllerElement = document.getElementById('controller');
+  var teamSelectionElement = document.getElementById('teamSelection');
+  var team1ButtonElement = document.getElementById('team1Button');
+  var team2ButtonElement = document.getElementById('team2Button');
   var rightButtonElement = document.getElementById('rightButton');
   var leftButtonElement = document.getElementById('leftButton');
   var spinnerElement = document.getElementById('spinner');
@@ -13,16 +16,14 @@
     }
   }
 
-  function getId() {
-    return window.location.hash.slice(1);
-  }
-
   socket.on('connect', function () {
-    socket.emit('addPlayer', {id: getId()});
+    spinnerElement.classList.add('hidden');
+    teamSelectionElement.classList.remove('hidden');
+    console.log('connect');
   });
 
   socket.on('join', function () {
-    spinnerElement.classList.add('hidden');
+    console.log('join');
     controllerElement.classList.remove('hidden');
   });
 
@@ -40,6 +41,19 @@
     socket.emit('right');
     vibrate(50);
   });
+
+  team1ButtonElement.addEventListener('click', function () {
+    socket.emit('addPlayer', {team: 0});
+    controllerElement.classList.remove('hidden');
+    teamSelectionElement.classList.add('hidden');
+  });
+
+  team2ButtonElement.addEventListener('click', function () {
+    socket.emit('addPlayer', {team: 1});
+    controllerElement.classList.remove('hidden');
+    teamSelectionElement.classList.add('hidden');
+  });
+
 
   window.addEventListener('load', function () {
     FastClick.attach(document.body);
