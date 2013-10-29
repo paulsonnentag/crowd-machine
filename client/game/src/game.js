@@ -3,8 +3,8 @@
 
   var HEIGHT = 600;
   var WIDTH = 800;
-  var PADDLE_WIDTH = 25;
-  var PADDLE_HEIGHT = 100;
+  var PADDLE_WIDTH = 10;
+  var PADDLE_HEIGHT = 150;
   var PADDLE_SPEED = 10;
   var LEFT_BORDER = 20;
   var RIGHT_BORDER = WIDTH - 20;
@@ -45,17 +45,36 @@
   }
 
   function getPaddles(players, posX) {
+    var power = PADDLE_HEIGHT / players.length;
 
-    return _.map(players, function (player) {
-      return {
-        pos: {
-          x: posX,
-          y: player.posY
-        },
-        height: PADDLE_HEIGHT / players.length,
-        width: PADDLE_WIDTH
-      };
-    });
+    return _(players)
+      .chain()
+      .sortBy(function (player) {
+        return player.posY;
+      })
+      .reduce(function (players, player) {
+        var prev = players[players.length - 1];
+
+        if (prev && (player.posY - prev.pos.y) < ((power + prev.height) / 2)) {
+
+          prev.height += power;
+          prev.pos.y = ((prev.pos.y * prev.height) + (player.posY * power)) / (power + prev.height);
+
+        } else {
+
+          players.push({
+            pos: {
+              x: posX,
+              y: player.posY
+            },
+            height: power,
+            width: PADDLE_WIDTH
+          });
+        }
+
+        return players;
+      }, [])
+      .value();
   }
 
   function resetBall(team) {
