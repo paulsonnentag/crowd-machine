@@ -79,6 +79,8 @@
 
   function updateBall() {
 
+    var matchedPaddle;
+
     if (players[0].length > 0 && players[1].length > 0) {
       ball.pos.x += ball.speed.x;
       ball.pos.y += ball.speed.y;
@@ -93,9 +95,11 @@
 
       if (ball.pos.x - ball.width / 2 < LEFT_BORDER + PADDLE_WIDTH / 2) {
 
-        if (hitTestBall(getPaddles(players[0]))) {
+        matchedPaddle = hitTestBall(getPaddles(players[0]));
+        if (matchedPaddle) {
           ball.speed.x *= -1;
           ball.pos.x = LEFT_BORDER + PADDLE_WIDTH / 2 + ball.width / 2;
+          ball.speed.y -= ((matchedPaddle.pos.y - ball.pos.y) / (matchedPaddle.height / 2)) * 5;
         } else {
           resetBall(1);
           ball.outOfField = true;
@@ -103,9 +107,12 @@
 
       } else if (ball.pos.x + ball.width / 2 > RIGHT_BORDER - PADDLE_WIDTH / 2) {
 
-        if (hitTestBall(getPaddles(players[1]))) {
+        matchedPaddle = hitTestBall(getPaddles(players[1]));
+
+        if (matchedPaddle) {
           ball.speed.x *= -1;
           ball.pos.x = RIGHT_BORDER - PADDLE_WIDTH / 2 - ball.width / 2;
+          ball.speed.y -= ((matchedPaddle.pos.y - ball.pos.y) / (matchedPaddle.height / 2)) * 5;
         } else {
           resetBall(0);
           ball.outOfField = true;
@@ -125,7 +132,7 @@
   }
 
   function hitTestBall(paddles) {
-    return _(paddles).any(testCollisionWithBall);
+    return _(paddles).find(testCollisionWithBall);
   }
 
   function testCollisionWithBall(paddle) {
